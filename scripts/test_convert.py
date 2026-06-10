@@ -48,3 +48,37 @@ def test_extract_pdf_text_joins_pages(tmp_path):
     result = extract_pdf_text(pdf_path)
     assert "Page 0 content" in result
     assert "Page 2 content" in result
+
+
+from unittest.mock import MagicMock
+
+
+def test_call_claude_calls_api_and_returns_text():
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = MagicMock(
+        content=[MagicMock(text="---\nversion: '2.8'\n---\nBody text.")]
+    )
+
+    from convert import call_claude
+    result = call_claude("raw pdf text", mock_client)
+
+    assert result == "---\nversion: '2.8'\n---\nBody text."
+    mock_client.messages.create.assert_called_once()
+    call_kwargs = mock_client.messages.create.call_args.kwargs
+    assert call_kwargs["model"] == "claude-sonnet-4-6"
+    assert any("raw pdf text" in str(m) for m in call_kwargs["messages"])
+
+
+def test_write_release_notes_creates_file(tmp_path):
+    from convert import write_release_notes
+    content = "---\nversion: '2.8'\n---\nBody."
+    output_path = write_release_notes("v2_8", content, tmp_path)
+    assert output_path == tmp_path / "v2_8.md"
+    assert output_path.read_text(encoding="utf-8") == content
+
+
+def test_write_release_notes_creates_output_dir(tmp_path):
+    from convert import write_release_notes
+    nested = tmp_path / "a" / "b" / "releases"
+    write_release_notes("v2_8", "content", nested)
+    assert (nested / "v2_8.md").exists()
