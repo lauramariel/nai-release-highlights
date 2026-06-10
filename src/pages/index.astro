@@ -5,7 +5,7 @@ import VersionEntry from '../components/VersionEntry.astro';
 import Search from '../components/Search.astro';
 
 const releases = await getCollection('releases');
-const sorted = releases.sort(
+const sorted = [...releases].sort(
   (a, b) => b.data.release_date.getTime() - a.data.release_date.getTime()
 );
 ---
