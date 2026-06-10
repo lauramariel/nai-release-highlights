@@ -9,3 +9,16 @@ const sorted = [...releases].sort(
   (a, b) => b.data.release_date.getTime() - a.data.release_date.getTime()
 );
 ---
+
+<Base>
+  <Search />
+  <div class="timeline">
+    {sorted.map((release, i) => (
+      <VersionEntry release={release} isLatest={i === 0} />
+    ))}
+  </div>
+</Base>
+
+<style>
+  .timeline { padding-top: 8px; }
+</style>

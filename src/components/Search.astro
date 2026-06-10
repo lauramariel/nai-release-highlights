@@ -2,3 +2,42 @@
 // Pagefind UI files are generated into dist/pagefind/ by `npm run postbuild`.
 // Search does not work in dev mode — use `npm run build && npm run preview`.
 ---
+
+<div id="search-wrapper" data-pagefind-ignore>
+  <div id="search"></div>
+</div>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    import('/pagefind/pagefind-ui.js')
+      .then(({ PagefindUI }) => {
+        new PagefindUI({ element: '#search', showSubResults: false, resetStyles: false });
+      })
+      .catch(() => {});
+  });
+</script>
+
+<style>
+  #search-wrapper { padding: 24px 0 16px; }
+
+  #search :global(.pagefind-ui__search-input) {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 6px !important;
+    color: var(--text) !important;
+    font-size: 13px !important;
+    padding: 9px 14px !important;
+    width: 100% !important;
+    max-width: 480px !important;
+  }
+  #search :global(.pagefind-ui__result) {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    margin-bottom: 8px !important;
+  }
+  #search :global(.pagefind-ui__result-title a) { color: var(--accent-light) !important; }
+  #search :global(.pagefind-ui__result-excerpt) { color: var(--text-muted) !important; font-size: 12px !important; }
+</style>

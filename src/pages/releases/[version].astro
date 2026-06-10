@@ -23,3 +23,102 @@ const byCategory = features.reduce<Record<string, typeof features>>((acc, f) => 
   return acc;
 }, {});
 ---
+
+<Base title={`v${version} — NAI Release Notes`}>
+  <div class="detail">
+    <nav class="breadcrumb"><a href="/">← All releases</a></nav>
+
+    <div class="detail-header">
+      <h2>v{version}</h2>
+      <span class="date">{dateStr}</span>
+    </div>
+
+    <p class="summary">{summary}</p>
+
+    {Object.keys(byCategory).length > 0 && (
+      <section class="section">
+        <h3>What's New</h3>
+        {Object.entries(byCategory).map(([cat, items]) => (
+          <div class="category-group">
+            <h4>{cat}</h4>
+            <ul>
+              {items.map((f) => (
+                <li><strong>{f.title}</strong> — {f.description}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    )}
+
+    {fixed_issues.length > 0 && (
+      <section class="section">
+        <h3>Fixed Issues</h3>
+        <ul>
+          {fixed_issues.map((issue) => (
+            <li><strong>{issue.title}</strong> — {issue.description}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {known_issues.length > 0 && (
+      <section class="section">
+        <h3>Known Issues</h3>
+        <ul>
+          {known_issues.map((issue) => (
+            <li>
+              <strong>{issue.title}</strong> — {issue.description}
+              {issue.workaround && (
+                <div class="workaround">Workaround: {issue.workaround}</div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="section prose">
+      <h3>Full Release Notes</h3>
+      <Content />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .detail { padding-top: 28px; }
+
+  .breadcrumb { margin-bottom: 20px; }
+  .breadcrumb a { font-size: 14px; color: var(--accent-light); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .detail-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 10px; }
+  .detail-header h2 { font-size: 28px; font-weight: 700; }
+  .date { font-size: 14px; color: var(--text-faint); }
+
+  .summary { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 28px; }
+
+  .section { margin-bottom: 32px; }
+  .section h3 {
+    font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .category-group { margin-bottom: 16px; }
+  .category-group h4 { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+
+  ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  li { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+  li strong { color: var(--text); }
+
+  .workaround {
+    margin-top: 4px; font-size: 13px; color: var(--text-faint);
+    padding-left: 12px; border-left: 2px solid rgba(245, 158, 11, 0.4);
+  }
+
+  .prose :global(h1), .prose :global(h2), .prose :global(h3) { color: var(--text); margin: 16px 0 8px; }
+  .prose :global(p) { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .prose :global(ul) { list-style: disc; padding-left: 20px; }
+  .prose :global(li) { font-size: 15px; color: var(--text-muted); }
+</style>

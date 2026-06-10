@@ -11,3 +11,58 @@ const { version, release_date, features } = release.data;
 
 const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 ---
+
+<div class="entry" id={release.slug}>
+  <div class="spine">
+    <div class:list={['dot', { latest: isLatest }]}></div>
+    <div class="line"></div>
+  </div>
+  <div class="body">
+    <div class="entry-header">
+      <span class="version-label">v{version}</span>
+      <a href={`#${release.slug}`} class="anchor" aria-label={`Link to v${version}`}>#</a>
+      <span class="date">{dateStr}</span>
+      {isLatest && <span class="badge">Latest</span>}
+    </div>
+    {features.length > 0 && (
+      <ul class="feature-list">
+        {features.map((f) => (
+          <li>{f.title}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
+
+<style>
+  .entry { display: flex; gap: 20px; }
+
+  .spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 14px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: #475569; margin-top: 5px; flex-shrink: 0; }
+  .dot.latest { background: var(--accent); box-shadow: 0 0 10px rgba(124, 135, 250, 0.5); }
+  .line { width: 2px; flex: 1; background: rgba(255, 255, 255, 0.06); min-height: 20px; }
+
+  .body { flex: 1; padding-bottom: 32px; }
+
+  .entry-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+  .version-label { font-size: 18px; font-weight: 700; color: var(--text); }
+
+  .anchor {
+    font-size: 14px; color: var(--text-faint); text-decoration: none;
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .entry:hover .anchor { opacity: 1; }
+  .anchor:hover { color: var(--accent-light); }
+
+  .date { font-size: 13px; color: var(--text-faint); }
+
+  .badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    background: rgba(124, 135, 250, 0.15); color: var(--accent-light);
+    border: 1px solid rgba(124, 135, 250, 0.3);
+  }
+
+  .feature-list { list-style: disc; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .feature-list li { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+</style>

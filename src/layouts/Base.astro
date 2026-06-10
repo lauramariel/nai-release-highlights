@@ -4,3 +4,59 @@ interface Props {
 }
 const { title = 'Nutanix Enterprise AI Release Notes' } = Astro.props;
 ---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="eyebrow">NUTANIX ENTERPRISE AI</div>
+      <h1>Release Highlights</h1>
+    </header>
+    <main data-pagefind-body>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d1a;
+    --surface: #1a1a2e;
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --accent: #7c87fa;
+    --accent-light: #a5b4fc;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+  body { min-height: 100vh; }
+
+  .site-header {
+    padding: 28px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .site-header .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .site-header h1 { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .site-header .subtitle { font-size: 14px; color: var(--text-faint); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 0 40px 60px; }
+
+  @media (max-width: 600px) {
+    .site-header { padding: 20px 16px 16px; }
+    main { padding: 0 16px 40px; }
+  }
+</style>
