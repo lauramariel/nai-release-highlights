@@ -6,15 +6,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "postbuild": "pagefind --site dist",
-    "preview": "astro preview",
-    "check": "astro check"
+    "preview": "npm run build && wrangler dev",
+    "check": "astro check",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "11",
     "astro": "^4.16.18"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "pagefind": "^1.1.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wrangler": "^4.99.0"
   }
 }
