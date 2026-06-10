@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import VersionEntry from '../components/VersionEntry.astro';
+
+const releases = await getCollection('releases');
+const sorted = releases.sort(
+  (a, b) => b.data.release_date.getTime() - a.data.release_date.getTime()
+);
+---

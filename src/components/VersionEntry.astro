@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  release: CollectionEntry<'releases'>;
+  isLatest: boolean;
+}
+
+const { release, isLatest } = Astro.props;
+const { version, release_date, summary, features } = release.data;
+
+const categories = [...new Set(features.map((f) => f.category))];
+const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+function tagColor(cat: string): string {
+  const palette = ['tag-blue', 'tag-green', 'tag-yellow', 'tag-purple', 'tag-teal'];
+  let h = 0;
+  for (const c of cat) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+  return palette[h % palette.length];
+}
+---
