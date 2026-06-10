@@ -33,6 +33,8 @@ features:
     category: "Category (e.g. Performance, API, Security, MLOps, Platform, Core)"
 ---
 
+IMPORTANT: version MUST be a quoted string (e.g. version: "2.8"), never a bare number.
+IMPORTANT: omit the workaround field entirely for known_issues entries that have no workaround.
 After the closing ---, include the full release notes as markdown prose. Output nothing before the opening ---."""
 
 
@@ -48,7 +50,7 @@ def call_claude(text: str, client: anthropic.Anthropic) -> str:
             }
         ],
     )
-    return message.content[0].text
+    return message.content[0].text.lstrip()
 
 
 def write_release_notes(slug: str, content: str, output_dir: Path) -> Path:

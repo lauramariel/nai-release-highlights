@@ -66,7 +66,10 @@ def test_call_claude_calls_api_and_returns_text():
     mock_client.messages.create.assert_called_once()
     call_kwargs = mock_client.messages.create.call_args.kwargs
     assert call_kwargs["model"] == "claude-sonnet-4-6"
+    assert call_kwargs["max_tokens"] == 4096
     assert any("raw pdf text" in str(m) for m in call_kwargs["messages"])
+    from convert import SYSTEM_PROMPT
+    assert call_kwargs["system"] == SYSTEM_PROMPT
 
 
 def test_write_release_notes_creates_file(tmp_path):
