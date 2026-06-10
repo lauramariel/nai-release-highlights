@@ -19,8 +19,7 @@ const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 
   </div>
   <div class="body">
     <div class="entry-header">
-      <span class="version-label">v{version}</span>
-      <a href={`#${release.slug}`} class="anchor" aria-label={`Link to v${version}`}>#</a>
+      <a href={`#${release.slug}`} class="version-link">v{version}</a>
       <span class="date">{dateStr}</span>
       {isLatest && <span class="badge">Latest</span>}
     </div>
@@ -38,22 +37,18 @@ const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 
   .entry { display: flex; gap: 20px; }
 
   .spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 14px; }
-  .dot { width: 12px; height: 12px; border-radius: 50%; background: #475569; margin-top: 5px; flex-shrink: 0; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--dot-inactive); margin-top: 5px; flex-shrink: 0; }
   .dot.latest { background: var(--accent); box-shadow: 0 0 10px rgba(124, 135, 250, 0.5); }
-  .line { width: 2px; flex: 1; background: rgba(255, 255, 255, 0.06); min-height: 20px; }
+  .line { width: 2px; flex: 1; background: var(--timeline-line); min-height: 20px; }
 
   .body { flex: 1; padding-bottom: 32px; }
 
   .entry-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 
-  .version-label { font-size: 18px; font-weight: 700; color: var(--text); }
-
-  .anchor {
-    font-size: 14px; color: var(--text-faint); text-decoration: none;
-    opacity: 0; transition: opacity 0.15s;
+  .version-link {
+    font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none;
   }
-  .entry:hover .anchor { opacity: 1; }
-  .anchor:hover { color: var(--accent-light); }
+  .version-link:hover { color: var(--accent-light); }
 
   .date { font-size: 13px; color: var(--text-faint); }
 

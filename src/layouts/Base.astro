@@ -11,17 +11,41 @@ const { title = 'Nutanix Enterprise AI Release Notes' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <script is:inline>
+      // Apply saved theme before first paint to avoid flash
+      (function() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'light' || (!saved && !prefersDark)) {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header">
-      <div class="eyebrow">NUTANIX ENTERPRISE AI</div>
-      <h1>Release Highlights</h1>
+      <div class="header-text">
+        <div class="eyebrow">NUTANIX ENTERPRISE AI</div>
+        <h1>Release Highlights</h1>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle light/dark mode">
+        <span class="icon-dark">☀️</span>
+        <span class="icon-light">🌙</span>
+      </button>
     </header>
     <main data-pagefind-body>
       <slot />
     </main>
   </body>
 </html>
+
+<script>
+  const btn = document.getElementById('theme-toggle')!;
+  btn.addEventListener('click', () => {
+    const isLight = document.documentElement.classList.toggle('light');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
 
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,17 +54,48 @@ const { title = 'Nutanix Enterprise AI Release Notes' } = Astro.props;
     --bg: #0d0d1a;
     --surface: #1a1a2e;
     --border: rgba(255, 255, 255, 0.1);
+    --text: #0f172a;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --accent: #7c87fa;
+    --accent-light: #a5b4fc;
+    --dot-inactive: #475569;
+    --timeline-line: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Dark mode (default) */
+  html:not(.light) {
+    --bg: #0d0d1a;
+    --surface: #1a1a2e;
+    --border: rgba(255, 255, 255, 0.1);
     --text: #e2e8f0;
     --text-muted: #94a3b8;
     --text-faint: #64748b;
     --accent: #7c87fa;
     --accent-light: #a5b4fc;
+    --dot-inactive: #475569;
+    --timeline-line: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Light mode */
+  html.light {
+    --bg: #ffffff;
+    --surface: #f1f5f9;
+    --border: rgba(0, 0, 0, 0.1);
+    --text: #0f172a;
+    --text-muted: #475569;
+    --text-faint: #94a3b8;
+    --accent: #5b67ea;
+    --accent-light: #4f46e5;
+    --dot-inactive: #cbd5e1;
+    --timeline-line: rgba(0, 0, 0, 0.08);
   }
 
   html { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
   body { min-height: 100vh; }
 
   .site-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
     padding: 28px 40px 24px;
     border-bottom: 1px solid var(--border);
     max-width: 860px;
@@ -52,6 +107,17 @@ const { title = 'Nutanix Enterprise AI Release Notes' } = Astro.props;
   }
   .site-header h1 { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
   .site-header .subtitle { font-size: 14px; color: var(--text-faint); }
+
+  #theme-toggle {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer; font-size: 16px;
+    color: var(--text-faint); flex-shrink: 0; margin-top: 4px;
+    transition: border-color 0.15s;
+  }
+  #theme-toggle:hover { border-color: var(--accent); }
+
+  html:not(.light) .icon-light { display: none; }
+  html.light .icon-dark { display: none; }
 
   main { max-width: 860px; margin: 0 auto; padding: 0 40px 60px; }
 
