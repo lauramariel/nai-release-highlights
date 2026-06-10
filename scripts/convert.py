@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 import fitz  # pymupdf
 import anthropic
+from dotenv import load_dotenv
 
 
 def extract_version_slug(filename: str) -> str:
@@ -58,3 +59,33 @@ def write_release_notes(slug: str, content: str, output_dir: Path) -> Path:
     output_path = output_dir / f"{slug}.md"
     output_path.write_text(content, encoding="utf-8")
     return output_path
+
+
+def main() -> None:
+    load_dotenv()
+    if len(sys.argv) != 2:
+        print("Usage: python convert.py <path-to-pdf>", file=sys.stderr)
+        sys.exit(1)
+
+    pdf_path = Path(sys.argv[1])
+    if not pdf_path.exists():
+        print(f"Error: file not found: {pdf_path}", file=sys.stderr)
+        sys.exit(1)
+
+    slug = extract_version_slug(pdf_path.name)
+    print(f"Processing {pdf_path.name} → {slug}.md")
+
+    print("Extracting text from PDF...")
+    text = extract_pdf_text(pdf_path)
+
+    print("Calling Claude API...")
+    client = anthropic.Anthropic()
+    content = call_claude(text, client)
+
+    output_dir = Path(__file__).parent.parent / "src" / "content" / "releases"
+    output_path = write_release_notes(slug, content, output_dir)
+    print(f"Written to {output_path}")
+
+
+if __name__ == "__main__":
+    main()
