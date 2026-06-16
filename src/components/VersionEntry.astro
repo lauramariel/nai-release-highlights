@@ -26,7 +26,12 @@ const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 
     {features.length > 0 && (
       <ul class="feature-list">
         {features.map((f) => (
-          <li>{f.title}</li>
+          <li>
+            <details>
+              <summary>{f.title}</summary>
+              <p class="feature-desc">{f.description}</p>
+            </details>
+          </li>
         ))}
       </ul>
     )}
@@ -60,4 +65,16 @@ const dateStr = release_date.toLocaleDateString('en-US', { month: 'long', year: 
 
   .feature-list { list-style: disc; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
   .feature-list li { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+  .feature-list details summary {
+    cursor: pointer; list-style: none; color: var(--text-muted);
+  }
+  .feature-list details summary::-webkit-details-marker { display: none; }
+  .feature-list details[open] summary { color: var(--text); }
+
+  .feature-desc {
+    font-size: 13px; color: var(--text-muted); line-height: 1.5;
+    margin-top: 4px; padding-left: 12px;
+    border-left: 2px solid var(--border);
+  }
 </style>
