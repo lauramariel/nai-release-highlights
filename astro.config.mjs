@@ -1,10 +1,14 @@
 import { defineConfig } from 'astro/config';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
-  output: 'static',
+  output: "hybrid",
+
   build: {
     format: 'directory',
   },
+
   vite: {
     build: {
       rollupOptions: {
@@ -12,4 +16,6 @@ export default defineConfig({
       },
     },
   },
+
+  adapter: cloudflare()
 });
